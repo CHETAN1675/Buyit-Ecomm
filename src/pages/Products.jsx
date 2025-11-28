@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProducts, setSearch, setCategory } from "../redux/productSlice";
-import { Container, Row, Col, Card, Form } from "react-bootstrap";
+import { fetchProducts, setSearch, setCategory } from "../Store/ProductSlice";
+import { Container, Row, Col, Card, Form ,Button} from "react-bootstrap";
+import { addToCart } from "../Store/cartSlice";
 
 const Products = () => {
   const dispatch = useDispatch();
-  const { list, search, category, loading } = useSelector((state) => state.products);
+  const { list, search, category, loading ,} = useSelector((state) => state.products);
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -49,6 +50,9 @@ const Products = () => {
                 <Card.Title>{product.name}</Card.Title>
                 <Card.Text>₹{product.price}</Card.Text>
                 <Card.Text>Category: {product.category}</Card.Text>
+                <Button variant="dark" onClick={() => dispatch(addToCart(product))}>
+                  Add to Cart 
+                </Button>
               </Card.Body>
             </Card>
           </Col>
