@@ -4,14 +4,26 @@ import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { placeOrder } from "../Services/orderService";
 import { useNavigate } from "react-router-dom";
 
+
 const Cart = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
+
   const { items } = useSelector(state => state.cart);
-  const { user } = useSelector(state => state.auth);
+  const user  = useSelector(state => state.auth.user);
 
   const total = items.reduce((sum, p) => sum + p.price * p.quantity, 0);
+
+  const handleOrder = async () => {
+    try {
+      await placeOrder(user.uid, items, total);
+      dispatch(clearCart());
+      navigate("/orders");
+    } catch (error) {
+      console.error("Order failed:", error);
+      alert("Something went wrong while placing order");
+    }
+  };
 
   return (
     <Container className="mt-4">
@@ -52,21 +64,19 @@ const Cart = () => {
           <Button variant="danger" onClick={() => dispatch(clearCart())}>
             Clear Cart
           </Button>
-        </>
-      )}
+      
+      
       <Button
        className="ms-2"
        variant="success"
        disabled={!user}   // button is disabled if user is not logged in
-       onClick={async () => {
-         await placeOrder(user.uid, items, total);
-         dispatch(clearCart());
-        navigate("/orders");
-    }}
+       onClick= {handleOrder}
 >
   Place Order
 </Button>
-
+ {!user && <p className="mt-2 text-danger">Login required to place an order.</p>}
+  </>
+  )}
     </Container>
   );
 };
