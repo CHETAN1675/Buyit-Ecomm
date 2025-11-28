@@ -9,6 +9,8 @@ import Header from './Components/Layout/Navbar';
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
+import ProtectedRoute from "./Components/ProtectedRoute";
+import PublicRoute from "./Components/PublicRoute";
 
 function App() {
     return(
@@ -17,12 +19,14 @@ function App() {
         <Routes>
         <Route path='/' element= {<Home/>}/>
         <Route path='/products' element={<Products/>}/>
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/orders" element={<Orders />} />
-        <Route path="/profile" element={<Profile/>} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+          {/* separate route for logged out user  */}
+        <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
+         <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
+         <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
+        {/* for logged in users only */}
+        <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
+        <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+        <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>} />
         </Routes>
  </BrowserRouter>
     )
