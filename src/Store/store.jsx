@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 
 const store = configureStore({
-    reducer:(state={})=>state
+    reducer:{products: productReducer,} 
 });
 
 export default store;
