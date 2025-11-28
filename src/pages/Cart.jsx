@@ -1,10 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
 import { updateQuantity, removeFromCart, clearCart } from "../Store/cartSlice";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { placeOrder } from "../Services/orderService";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
   const { items } = useSelector(state => state.cart);
+  const { user } = useSelector(state => state.auth);
 
   const total = items.reduce((sum, p) => sum + p.price * p.quantity, 0);
 
@@ -49,6 +54,19 @@ const Cart = () => {
           </Button>
         </>
       )}
+      <Button
+       className="ms-2"
+       variant="success"
+       disabled={!user}   // button is disabled if user is not logged in
+       onClick={async () => {
+         await placeOrder(user.uid, items, total);
+         dispatch(clearCart());
+        navigate("/orders");
+    }}
+>
+  Place Order
+</Button>
+
     </Container>
   );
 };
