@@ -26,3 +26,14 @@ export const fetchOrders = async (uid) => {
     ...order
   }));
 };
+
+export const getUserOrders = async (uid) => {
+  const response = await fetch(`${BASE_URL}/orders.json`);
+  const data = await response.json();
+
+  if (!data) return [];
+
+  return Object.entries(data)
+    .filter(([_, order]) => order.uid === uid)
+    .map(([id, order]) => ({ id, ...order }));
+};
