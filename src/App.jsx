@@ -29,8 +29,11 @@ function App() {
         <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
         <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>} />
+        <Route path="/addresses" element={<ProtectedRoute><Addresses /></ProtectedRoute>
+  }
+/>
         </Routes>
- </BrowserRouter>
+      </BrowserRouter>
     )
 
 }
