@@ -3,6 +3,7 @@ import { updateQuantity, removeFromCart, clearCart } from "../Store/cartSlice";
 import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import { placeOrder } from "../Services/orderService";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 
 const Cart = () => {

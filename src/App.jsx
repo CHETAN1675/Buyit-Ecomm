@@ -12,6 +12,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import PublicRoute from "./Components/PublicRoute";
 import Addresses from './pages/Addresses';
+import OrderDetails from './pages/OrderDetails';
 
 
 function App() {

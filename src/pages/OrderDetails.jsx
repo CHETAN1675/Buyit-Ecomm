@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Container, Card } from "react-bootstrap";
+import { cancelOrder } from "../Services/orderService";
 
 const OrderDetails = () => {
   const { user } = useSelector(state => state.auth);
@@ -14,6 +15,18 @@ const OrderDetails = () => {
       getOrderById(user.uid, id).then(setOrder);
     }
   }, [user, id]);
+
+  const handleCancel = async () => {
+  if (!window.confirm("Are you sure you want to cancel this order?")) return;
+
+  try {
+    await cancelOrder(user.uid, id);
+    setOrder({ ...order, status: "Cancelled" });
+    alert("Order cancelled successfully.");
+  } catch (err) {
+    alert("Failed to cancel order.");
+  }
+};
 
     if (!order) return <Container className="mt-4"><p>Loading order details...</p></Container>;
 
@@ -35,6 +48,12 @@ const OrderDetails = () => {
               <p>Price per item: ₹{item.price}</p>
               <p>Subtotal: ₹{item.price * item.quantity}</p>
             </div>
+            {order.status === "Pending" || order.status === "Processing" ? (
+         <button className="btn btn-danger mt-3" onClick={handleCancel}>
+           Cancel Order
+         </button>
+          ) : null}
+
           </div>
         </Card>
         ))}

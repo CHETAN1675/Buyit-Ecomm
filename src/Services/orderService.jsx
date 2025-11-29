@@ -46,3 +46,20 @@ export const getOrderById = async (userId, orderId) => {
 
   return data ? data : null;
 };
+
+export const cancelOrder = async (userId, orderId) => {
+  const url = `https://buyite-comm-default-rtdb.firebaseio.com/orders/${userId}/${orderId}/status.json`;
+
+  try {
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify("Cancelled")
+    });
+
+    return await res.json();
+  } catch (err) {
+    console.error("Failed to cancel order:", err);
+    throw err;
+  }
+};
