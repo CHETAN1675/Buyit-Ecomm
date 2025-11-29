@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const FIREBASE_DB_URL = "https://buyite-comm-default-rtdb.firebaseio.com/"; 
+const FIREBASE_DB_URL = "https://buyite-comm-default-rtdb.firebaseio.com"; 
+
 
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
@@ -8,7 +9,7 @@ export const fetchProducts = createAsyncThunk(
     const res = await fetch(`${FIREBASE_DB_URL}/products.json`);
     const data = await res.json();
 
-    return Object.keys(data || {}).map(key => ({
+    return Object.keys(data || {}).map((key) => ({
       id: key,
       ...data[key],
     }));
@@ -33,18 +34,19 @@ const productSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchProducts.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
-      state.loading = false;
-      state.list = action.payload;
-    });
-    builder.addCase(fetchProducts.rejected, (state) => {
-      state.loading = false;
-      state.error = "Failed to load products";
-    });
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.list = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchProducts.rejected, (state) => {
+        state.error = "Failed to load products";
+        state.loading = false;
+      });
   },
 });
 

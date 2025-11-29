@@ -5,29 +5,32 @@ import { placeOrder } from "../Services/orderService";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-
 const Cart = () => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const { items } = useSelector(state => state.cart);
-  const user  = useSelector(state => state.auth.user);
+  const user = useSelector(state => state.auth.user);
 
   const total = items.reduce((sum, p) => sum + p.price * p.quantity, 0);
 
   const handleOrder = async () => {
-     if (!user) return;
+    if (!user) {
+      alert("Please login to place an order.");
+      return;
+    }
     try {
-       setLoading(true);
+      setLoading(true);
       await placeOrder(user.uid, items, total);
       dispatch(clearCart());
       navigate("/orders");
     } catch (error) {
       console.error("Order failed:", error);
-      alert("Something went wrong while placing order");
-    }finally {
-    setLoading(false);
+      alert("Something went wrong while placing order.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -69,21 +72,19 @@ const Cart = () => {
           <Button variant="danger" onClick={() => dispatch(clearCart())}>
             Clear Cart
           </Button>
-      
-      
-      <Button
-       className="ms-2"
-       variant="success"
-       disabled={!user}   // button is disabled if user is not logged in
-       onClick= {handleOrder}
->
-  Place Order
-</Button>
- {!user && <p className="mt-2 text-danger">{loading ? "Placing order..." : "Place Order"}</p>}
-  </>
-  )}
+          <Button
+            className="ms-2"
+            variant="success"
+            disabled={!user || loading} // disable if not logged in or loading
+            onClick={handleOrder}
+          >
+            {loading ? "Placing order..." : "Place Order"}
+          </Button>
+          {!user && <p className="mt-2 text-danger">Please login to place an order.</p>}
+        </>
+      )}
     </Container>
   );
 };
-}
+
 export default Cart;

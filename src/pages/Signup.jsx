@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Card, Container, Form, Button } from "react-bootstrap";
 import { signupRequest } from "../api/authService";
-import useAuth from "../hooks/useAuth";
+import { useDispatch } from "react-redux";
+import { login as loginAction } from "../Store/authSlice";
 
 export default function Signup() {
-  const { login } = useAuth();
+  const dispatch = useDispatch();
   const [error, setError] = useState("");
 
   const handleSignup = async (e) => {
@@ -17,7 +18,8 @@ export default function Signup() {
     if (res.error) {
       setError(res.error.message);
     } else {
-      login({ email: res.email, localId: res.localId }, res.idToken);
+  
+      dispatch(loginAction({ email: res.email, uid: res.localId, token: res.idToken }));
     }
   };
 

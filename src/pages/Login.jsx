@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Card, Container, Form, Button } from "react-bootstrap";
 import { loginRequest } from "../api/authService";
-import useAuth from "../hooks/useAuth";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login as loginAction } from "../Store/authSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const { login } = useAuth();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
@@ -18,7 +20,8 @@ export default function Login() {
     if (res.error) {
       setError(res.error.message);
     } else {
-      login({ email: res.email, localId: res.localId }, res.idToken);
+      dispatch(loginAction({ email: res.email, uid: res.localId, token: res.idToken }));
+      navigate("/"); // redirect to Home after login
     }
   };
 
