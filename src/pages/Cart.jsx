@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 
 const Cart = () => {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -15,14 +16,17 @@ const Cart = () => {
   const total = items.reduce((sum, p) => sum + p.price * p.quantity, 0);
 
   const handleOrder = async () => {
+     if (!user) return;
     try {
+       setLoading(true);
       await placeOrder(user.uid, items, total);
       dispatch(clearCart());
       navigate("/orders");
     } catch (error) {
       console.error("Order failed:", error);
       alert("Something went wrong while placing order");
-    }
+    }finally {
+    setLoading(false);
   };
 
   return (
@@ -74,11 +78,11 @@ const Cart = () => {
 >
   Place Order
 </Button>
- {!user && <p className="mt-2 text-danger">Login required to place an order.</p>}
+ {!user && <p className="mt-2 text-danger">{loading ? "Placing order..." : "Place Order"}</p>}
   </>
   )}
     </Container>
   );
 };
-
+}
 export default Cart;

@@ -11,7 +11,7 @@ import Login from "./pages/Login";
 import ForgotPassword from "./pages/ForgotPassword";
 import ProtectedRoute from "./Components/ProtectedRoute";
 import PublicRoute from "./Components/PublicRoute";
-import Orders from "./pages/Orders";
+import Addresses from './pages/Addresses';
 
 
 function App() {
@@ -29,9 +29,8 @@ function App() {
         <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
         <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile/></ProtectedRoute>} />
-        <Route path="/addresses" element={<ProtectedRoute><Addresses /></ProtectedRoute>
-  }
-/>
+        <Route path="/addresses" element={<ProtectedRoute><Addresses /></ProtectedRoute>}/>
+        <Route path="/orders/:id" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     )

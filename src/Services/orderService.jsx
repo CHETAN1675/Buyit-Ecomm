@@ -37,3 +37,12 @@ export const getUserOrders = async (uid) => {
     .filter(([_, order]) => order.uid === uid)
     .map(([id, order]) => ({ id, ...order }));
 };
+
+export const getOrderById = async (userId, orderId) => {
+  const url = `https://buyite-comm-default-rtdb.firebaseio.com/orders/${userId}/${orderId}.json`;
+
+  const res = await fetch(url);
+  const data = await res.json();
+
+  return data ? data : null;
+};
