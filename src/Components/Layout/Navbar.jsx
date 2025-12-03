@@ -2,6 +2,7 @@ import { Container, Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
+import { FaHeart } from "react-icons/fa";
 
 
 
@@ -9,6 +10,7 @@ import { useSelector } from "react-redux";
 const Header = () => {
   const { user, logout } = useAuth();
   const { items } = useSelector(state => state.cart);
+  const { items: wishlistItems } = useSelector(state => state.wishlist);
 
   return (
     <Navbar bg="light" expand="lg">
@@ -22,6 +24,10 @@ const Header = () => {
 
             {user ? (
               <>
+                <Nav.Link as={Link} to="/wishlist">
+                <FaHeart color="red" style={{ marginRight: "5px" }} />
+                 Wishlist ({wishlistItems.length})
+                </Nav.Link>
                 <Nav.Link as={Link} to="/cart">Cart({items.length})</Nav.Link>
                 <Nav.Link as={Link} to="/orders">Orders</Nav.Link>
                 <Nav.Link as={Link} to="/profile">Profile</Nav.Link>

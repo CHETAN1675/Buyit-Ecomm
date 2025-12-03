@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { FIREBASE_DB_URL } from "../api/firebaseConfig";
 
-const FIREBASE_DB_URL = "https://buyite-comm-default-rtdb.firebaseio.com"; 
 
 
 export const fetchProducts = createAsyncThunk(

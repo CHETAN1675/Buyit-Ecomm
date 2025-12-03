@@ -28,15 +28,20 @@ export const fetchOrders = async (uid) => {
 };
 
 export const getUserOrders = async (uid) => {
-  const response = await fetch(`${BASE_URL}/orders.json`);
-  const data = await response.json();
+  const res = await fetch(`${DB_URL}/orders/${uid}.json`);
+  const data = await res.json();
 
   if (!data) return [];
 
-  return Object.entries(data)
-    .filter(([_, order]) => order.uid === uid)
-    .map(([id, order]) => ({ id, ...order }));
+  return Object.entries(data).map(([id, order]) => ({
+    id,               // Firebase order ID
+    items: order.items,
+    total: order.total,
+    status: order.status || "Pending",
+    date: order.createdAt
+  }));
 };
+
 
 export const getOrderById = async (userId, orderId) => {
   const url = `https://buyite-comm-default-rtdb.firebaseio.com/orders/${userId}/${orderId}.json`;
@@ -63,3 +68,4 @@ export const cancelOrder = async (userId, orderId) => {
     throw err;
   }
 };
+
