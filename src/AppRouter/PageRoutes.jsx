@@ -17,6 +17,7 @@ const OrderDetails = lazy(() => import("../pages/OrderDetails"));
 const Wishlist = lazy(() => import("../pages/Wishlist"));
 const About = lazy(() => import("../pages/About"));
 const Categories = lazy(() => import("../pages/Categories"));
+const ProductDetails = lazy(()=>import("../pages/ProductDetails"));
 
 const PageRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const PageRoutes = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/categories" element={<Categories />} />
 
@@ -39,6 +41,8 @@ const PageRoutes = () => {
         <Route path="/orders/:id" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/addresses" element={<ProtectedRoute><Addresses /></ProtectedRoute>} />
+        
+
       </Routes>
     </Suspense>
   );

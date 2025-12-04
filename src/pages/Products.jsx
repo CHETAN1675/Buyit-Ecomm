@@ -5,6 +5,7 @@ import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
 import { addToCart as addToCartAction } from "../Store/cartSlice";
 import { toggleWishlist } from "../Store/wishlistSlice";
 import { FaHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -16,7 +17,6 @@ const Products = () => {
     dispatch(fetchProducts());
   }, [dispatch]);
 
- 
   const handleAddToCart = (product) => {
     dispatch(
       addToCartAction({
@@ -76,34 +76,41 @@ const Products = () => {
         {filtered.map((product) => (
           <Col md={3} key={product.id} className="mb-3">
             <Card>
-              <Card.Img variant="top" src={product.image} />
-              <Card.Body>
-                <Card.Title>{product.title}</Card.Title>
-                <Card.Text>₹{product.price}</Card.Text>
-                <Card.Text>Category: {product.category}</Card.Text>
-                <Card.Text>{product.description}</Card.Text>
-                <Button
-                 variant="outline-danger" className="me-2"
-                 onClick={() =>
-                      dispatch(
-                              toggleWishlist({
-                              id: product.id,
-                              title: product.title,
-                              price: product.price,
-                              image: product.image,
-                              description: product.description,
-                              category: product.category,
-                             })
-                           )
-                         }
-                        >
-            <FaHeart />
-         </Button>
+              <Link
+                to={`/products/${product.id}`}
+                style={{ textDecoration: "none", color: "inherit" }}
+              >
+                <Card.Img variant="top" src={product.image}
+                style={{ height: "220px", objectFit: "contain", background: "#fff" }}
+                />
+                <Card.Body>
+                  <Card.Title>{product.title}</Card.Title>
+                  <Card.Text>₹{product.price}</Card.Text>
+                  <Card.Text>Category: {product.category}</Card.Text>
+                </Card.Body>
+              </Link>
 
+              <Card.Body>
                 <Button
-                  variant="dark"
-                  onClick={() => handleAddToCart(product)}
+                  variant="outline-danger"
+                  className="me-2"
+                  onClick={() =>
+                    dispatch(
+                      toggleWishlist({
+                        id: product.id,
+                        title: product.title,
+                        price: product.price,
+                        image: product.image,
+                        description: product.description,
+                        category: product.category,
+                      })
+                    )
+                  }
                 >
+                  <FaHeart />
+                </Button>
+
+                <Button variant="dark" onClick={() => handleAddToCart(product)}>
                   Add to Cart
                 </Button>
               </Card.Body>
