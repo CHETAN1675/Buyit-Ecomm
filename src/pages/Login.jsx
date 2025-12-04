@@ -21,7 +21,7 @@ export default function Login() {
       setError(res.error.message);
     } else {
       dispatch(loginAction({ email: res.email, uid: res.localId, token: res.idToken }));
-      navigate("/"); // redirect to Home after login
+      navigate("/");
     }
   };
 
@@ -41,8 +41,13 @@ export default function Login() {
           </Form.Group>
           <Button type="submit" className="w-100">Login</Button>
         </Form>
+
         <div className="text-center mt-2">
           <Link to="/forgot-password">Forgot Password?</Link>
+        </div>
+
+        <div className="text-center mt-3">
+          New here? <Link to="/signup">Create an account</Link>
         </div>
       </Card>
     </Container>
