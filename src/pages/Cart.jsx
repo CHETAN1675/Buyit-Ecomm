@@ -1,11 +1,11 @@
 import { useSelector, useDispatch } from "react-redux";
 import { updateQuantity, removeFromCart, clearCart } from "../Store/cartSlice";
-import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Offcanvas, Button, Form, Image } from "react-bootstrap";
 import { placeOrder } from "../Services/orderService";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const Cart = () => {
+const Cart = ({ show, handleClose }) => {    // <<<<<< FIXED
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,8 +25,8 @@ const Cart = () => {
       await placeOrder(user.uid, items, total);
       dispatch(clearCart());
       navigate("/orders");
-    } catch (error) {
-      console.error("Order failed:", error);
+      handleClose(); // close panel after order
+    } catch {
       alert("Something went wrong while placing order.");
     } finally {
       setLoading(false);
@@ -34,56 +34,65 @@ const Cart = () => {
   };
 
   return (
-    <Container className="mt-4">
-      <h3>Shopping Cart</h3>
+    <Offcanvas show={show} onHide={handleClose} placement="end" backdrop>
+      <Offcanvas.Header closeButton>
+        <Offcanvas.Title>Shopping Cart</Offcanvas.Title>
+      </Offcanvas.Header>
 
-      {items.length === 0 && <p>Your cart is empty.</p>}
+      <Offcanvas.Body>
+        {items.length === 0 && <p>Your cart is empty.</p>}
 
-      {items.map(item => (
-        <Row key={item.id} className="border p-2 mb-2 align-items-center">
-          <Col md={4}>{item.name}</Col>
-          <Col md={2}>₹{item.price}</Col>
-          <Col md={3}>
-            <Form.Control
-              type="number"
-              min="1"
-              value={item.quantity}
-              onChange={e =>
-                dispatch(updateQuantity({ id: item.id, quantity: Number(e.target.value) }))
-              }
-            />
-          </Col>
-          <Col md={2}>₹{item.price * item.quantity}</Col>
-          <Col md={1}>
-            <Button
-              variant="outline-danger"
-              size="sm"
-              onClick={() => dispatch(removeFromCart(item.id))}
-            >
-              X
+        {items.map(item => (
+          <div key={item.id} className="d-flex align-items-center border-bottom pb-2 mb-2">
+            <Image src={item.image} alt={item.name} width="60" height="60" rounded />
+
+            <div className="ms-3 flex-grow-1">
+              <h6 className="m-0">{item.name}</h6>
+              <small className="text-muted">₹{item.price}</small>
+              <Form.Control
+                className="mt-1"
+                type="number"
+                min="1"
+                value={item.quantity}
+                onChange={e =>
+                  dispatch(updateQuantity({ id: item.id, quantity: Number(e.target.value) }))
+                }
+              />
+            </div>
+
+            <div className="text-end">
+              <b>₹{item.price * item.quantity}</b>
+              <br />
+              <Button
+                variant="outline-danger"
+                size="sm"
+                onClick={() => dispatch(removeFromCart(item.id))}
+              >
+                X
+              </Button>
+            </div>
+          </div>
+        ))}
+
+        {items.length > 0 && (
+          <>
+            <h5 className="mt-3">Total: ₹{total}</h5>
+            <Button variant="danger" onClick={() => dispatch(clearCart())}>
+              Clear Cart
             </Button>
-          </Col>
-        </Row>
-      ))}
-
-      {items.length > 0 && (
-        <>
-          <h4>Total: ₹{total}</h4>
-          <Button variant="danger" onClick={() => dispatch(clearCart())}>
-            Clear Cart
-          </Button>
-          <Button
-            className="ms-2"
-            variant="success"
-            disabled={!user || loading} // disable if not logged in or loading
-            onClick={handleOrder}
-          >
-            {loading ? "Placing order..." : "Place Order"}
-          </Button>
-          {!user && <p className="mt-2 text-danger">Please login to place an order.</p>}
-        </>
-      )}
-    </Container>
+            <Button
+              className="ms-2"
+              variant="success"
+              disabled={!user || loading}
+              onClick={handleOrder}
+            >
+              {loading ? "Placing order..." : "Place Order"}
+            </Button>
+            {!user && <p className="mt-2 text-danger">Please login to place an order.</p>}
+          </>
+        )}
+      </Offcanvas.Body>
+    </Offcanvas>
   );
 };
 

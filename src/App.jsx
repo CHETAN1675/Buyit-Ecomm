@@ -14,6 +14,8 @@ import PublicRoute from "./Components/PublicRoute";
 import Addresses from './pages/Addresses';
 import OrderDetails from './pages/OrderDetails';
 import Wishlist from './pages/Wishlist';
+import About from './pages/About';
+import Categories from './pages/Categories';
 
 
 function App() {
@@ -23,10 +25,13 @@ function App() {
         <Routes>
         <Route path='/' element= {<Home/>}/>
         <Route path='/products' element={<Products/>}/>
+        <Route path="/about" element={<About />}/>
           {/* separate route for logged out user  */}
         <Route path="/login" element={<PublicRoute><Login /></PublicRoute>} />
          <Route path="/signup" element={<PublicRoute><Signup /></PublicRoute>} />
          <Route path="/forgot-password" element={<PublicRoute><ForgotPassword /></PublicRoute>} />
+         <Route path="/categories" element={<PublicRoute><Categories /></PublicRoute>} />
+
         {/* for logged in users only */}
         <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
         <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
