@@ -7,7 +7,6 @@ import PublicRoute from "../Components/PublicRoute";
 const Home = lazy(() => import("../pages/Home"));
 const Products = lazy(() => import("../pages/Products"));
 const Cart = lazy(() => import("../pages/Cart"));
-const Orders = lazy(() => import("../pages/Orders"));
 const Profile = lazy(() => import("../pages/Profile"));
 const Signup = lazy(() => import("../pages/Signup"));
 const Login = lazy(() => import("../pages/Login"));
@@ -18,6 +17,7 @@ const Wishlist = lazy(() => import("../pages/Wishlist"));
 const About = lazy(() => import("../pages/About"));
 const Categories = lazy(() => import("../pages/Categories"));
 const ProductDetails = lazy(()=>import("../pages/ProductDetails"));
+const MyOrder = lazy(()=>import("../pages/MyOrder"));
 
 const PageRoutes = () => {
   return (
@@ -37,7 +37,7 @@ const PageRoutes = () => {
         {/* protected */}
         <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
         <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
-        <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+        <Route path="/myorders" element={<ProtectedRoute><MyOrder/></ProtectedRoute>} />
         <Route path="/orders/:id" element={<ProtectedRoute><OrderDetails /></ProtectedRoute>} />
         <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
         <Route path="/addresses" element={<ProtectedRoute><Addresses /></ProtectedRoute>} />

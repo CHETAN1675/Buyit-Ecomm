@@ -4,6 +4,7 @@ export const placeOrder = async (uid, items, total) => {
   const order = {
     items,
     total,
+    status: "Pending",
     createdAt: new Date().toISOString()
   };
 

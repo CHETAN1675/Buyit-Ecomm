@@ -45,7 +45,9 @@ const Header = () => {
                 <FaShoppingCart className="cart-icon" />
                {items.length > 0 && <span className="cart-badge">{items.length}</span>}
                 </Nav.Link>
-
+                 <Nav.Link as={Link} to="/myorders" style={{ color: "white" }}>
+                 My Orders
+               </Nav.Link>
                 <Nav.Link as={Link} to="/profile" style={{ color: "white" }}>Profile</Nav.Link>
                 <Nav.Link onClick={logout} style={{ color: "white" }}>Logout</Nav.Link>
               </>
