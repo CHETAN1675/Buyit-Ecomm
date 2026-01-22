@@ -1,11 +1,11 @@
-const DB_URL = "https://buyite-comm-default-rtdb.firebaseio.com";
+import {  FIREBASE_DB_URL as DB_URL} from "../api/firebaseConfig";
 
 export const placeOrder = async (uid, items, total) => {
   const order = {
     items,
     total,
     status: "Pending",
-    createdAt: new Date().toISOString()
+    date: new Date().toISOString()
   };
 
   const res = await fetch(`${DB_URL}/orders/${uid}.json`, {
@@ -16,18 +16,6 @@ export const placeOrder = async (uid, items, total) => {
 
   return res.json(); 
 };
-
-export const fetchOrders = async (uid) => {
-  const res = await fetch(`${DB_URL}/orders/${uid}.json`);
-  const data = await res.json();
-  if (!data) return [];
-
-  return Object.entries(data).map(([id, order]) => ({
-    id,
-    ...order
-  }));
-};
-
 export const getUserOrders = async (uid) => {
   const res = await fetch(`${DB_URL}/orders/${uid}.json`);
   const data = await res.json();
@@ -39,7 +27,7 @@ export const getUserOrders = async (uid) => {
     items: order.items,
     total: order.total,
     status: order.status || "Pending",
-    date: order.createdAt
+    date: order.date
   }));
 };
 

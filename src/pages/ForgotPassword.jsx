@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, Container, Form, Button } from "react-bootstrap";
-import { resetPasswordRequest } from "../api/authService";
+import { resetPasswordRequest } from "../Services/authService";
 
 export default function ForgotPassword() {
   const [message, setMessage] = useState("");

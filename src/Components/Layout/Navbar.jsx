@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { FaHeart , FaShoppingCart } from "react-icons/fa";
 import { useState } from "react";
 import Cart from "../../pages/Cart";
+import logo from "../../../assests/logo.png";
 
 import "./Navbar.css";
 
@@ -29,9 +30,21 @@ const Header = () => {
           </Nav>
 
           {/* Centered Brand Name */}
-          <Navbar.Brand as={Link} to="/" className="mx-auto" style={{ color: "white", textAlign: "center", flex: 1 }}>
-            BuyIt.com
-          </Navbar.Brand>
+        <Navbar.Brand
+         as={Link}
+         to="/"
+         className="mx-auto d-flex align-items-center gap-2"
+         style={{ color: "white", flex: 1, justifyContent: "center" }}
+        >
+         <img
+           src={logo}
+           alt="BuyIt Logo"
+           height="40"
+           className="d-inline-block align-top"
+        />
+          <span>BuyIt.com</span>
+        </Navbar.Brand>
+
 
           {/* Right Side Navigation */}
           <Nav>

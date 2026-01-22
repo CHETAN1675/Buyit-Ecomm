@@ -35,7 +35,8 @@ const OrderDetails = () => {
       <h2>Order Details</h2>
       <p><strong>Order ID:</strong> {id}</p>
       <p><strong>Total: ₹{order.total}</strong></p>
-      <p><strong>Date:</strong>{new Date(order.date).toLocaleString()}</p>
+      <p><strong>Date:</strong>{order.date?.toDate? order.date.toDate().toLocaleString():new Date(order.date).toLocaleString()}</p>
+
       <h3 className="mt-4">Items:</h3>
       
         {order.items.map((item, index) => (
@@ -49,7 +50,7 @@ const OrderDetails = () => {
               <p>Subtotal: ₹{item.price * item.quantity}</p>
             </div>
             {order.status === "Pending" || order.status === "Processing" ? (
-         <button className="btn btn-danger mt-3" onClick={handleCancel}>
+         <button className="btn btn-danger ms-auto mt-3" onClick={handleCancel}>
            Cancel Order
          </button>
           ) : null}

@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
-import { Container, Card, Badge, Image } from "react-bootstrap";
+import { Container, Card, Badge, Image, Spinner } from "react-bootstrap";
 import useAuth from "../hooks/useAuth";
 import { getUserOrders } from "../Services/orderService";
+import { useNavigate } from "react-router-dom";
 import "./MyOrder.css";
 
 const MyOrder = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user?.uid) return;
@@ -14,8 +17,10 @@ const MyOrder = () => {
   }, [user]);
 
   async function loadOrders() {
+    setLoading(true);
     const res = await getUserOrders(user.uid);
     setOrders(res);
+    setLoading(false);
   }
 
   const badgeColor = (status) => {
@@ -30,32 +35,42 @@ const MyOrder = () => {
   };
 
   return (
-    <Container fluid className="mt-4 px-4">
+    <Container fluid className="mt-4 px-4 myorder-container">
       <h3 className="mb-4">Track Your Order Status</h3>
 
-      {orders.length === 0 && <p>No orders found.</p>}
-
-      {orders.map(order => (
-        <Card key={order.id} className="myorder-card shadow">
-          <div className="myorder-order-content">
-
-            <Image
-              src={order.items?.[0]?.image} className="myorder-image"/>
-            <div className="myorder-details">
-            <p><span className="myorder-label">Quantity:</span> {order.items?.length}</p>
-            <p>
-            <span className="myorder-label">Status:</span>
-            <Badge bg={badgeColor(order.status)} className="ms-2">
-            {order.status}
-            </Badge>
-            </p>
-            <p><span className="myorder-label">Total:</span> ₹{order.total}</p>
-            <p><span className="myorder-label">Order ID:</span> {order.id}</p>
-            <p><span className="myorder-label">Placed On:</span> {new Date(order.date).toLocaleString()}</p>
+      {loading ? (
+        <div className="text-center mt-5">
+          <Spinner animation="border" />
+          <p className="mt-2">Fetching orders...</p>
+        </div>
+      ) : orders.length === 0 ? (
+        <p>No orders found.</p>
+      ) : (
+        orders.map(order => (
+          <Card
+            key={order.id}
+            className="myorder-card shadow"
+            onClick={() => navigate(`/orders/${order.id}`)}
+            style={{ cursor: "pointer" }}
+          >
+            <div className="myorder-order-content">
+              <Image src={order.items?.[0]?.image} className="myorder-image" />
+              <div className="myorder-details">
+                <p><span className="myorder-label">Quantity:</span> {order.items?.length}</p>
+                <p>
+                  <span className="myorder-label">Status:</span>
+                  <Badge bg={badgeColor(order.status)} className="ms-2">
+                    {order.status}
+                  </Badge>
+                </p>
+                <p><span className="myorder-label">Total:</span> ₹{order.total}</p>
+                <p><span className="myorder-label">Order ID:</span> {order.id}</p>
+                <p><span className="myorder-label">Placed On:</span> {order.date ? new Date(order.date).toLocaleString() : "Not available"}</p>
+              </div>
             </div>
-          </div>
-        </Card>
-      ))}
+          </Card>
+        ))
+      )}
     </Container>
   );
 };

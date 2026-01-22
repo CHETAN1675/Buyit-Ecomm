@@ -1,4 +1,4 @@
-import { FIREBASE_API_KEY, FIREBASE_AUTH_BASE_URL } from "./firebaseConfig";
+import { FIREBASE_API_KEY, FIREBASE_AUTH_BASE_URL } from "../api/firebaseConfig";
 
 export async function signupRequest(email, password) {
   const response = await fetch(

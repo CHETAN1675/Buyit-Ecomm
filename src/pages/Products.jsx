@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts, setSearch, setCategory } from "../Store/ProductSlice";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Form, Button,Spinner } from "react-bootstrap";
 import { addToCart as addToCartAction } from "../Store/cartSlice";
 import { toggleWishlist } from "../Store/wishlistSlice";
 import { FaHeart } from "react-icons/fa";
@@ -26,12 +26,11 @@ const Products = () => {
         image: product.image,
         description: product.description,
         category: product.category,
-        quantity: 1,
       })
     );
   };
 
-  // Safe filtering
+  
   const filtered = list.filter(
     (p) =>
       (category === "all" || p.category === category) &&
@@ -68,7 +67,7 @@ const Products = () => {
         </Col>
       </Row>
 
-      {loading && <p>Loading products...</p>}
+      {loading && <div><Spinner animation="border" /> <p>Loading products...</p></div> }
       {error && <p className="text-danger">{error}</p>}
       {!loading && filtered.length === 0 && <p>No products found.</p>}
 

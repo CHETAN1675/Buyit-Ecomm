@@ -5,8 +5,10 @@ import { placeOrder } from "../Services/orderService";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-const Cart = ({ show, handleClose }) => {    // <<<<<< FIXED
+const Cart = ({ show, handleClose }) => {
   const [loading, setLoading] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,7 +27,7 @@ const Cart = ({ show, handleClose }) => {    // <<<<<< FIXED
       await placeOrder(user.uid, items, total);
       dispatch(clearCart());
       navigate("/orders");
-      handleClose(); // close panel after order
+      handleClose();
     } catch {
       alert("Something went wrong while placing order.");
     } finally {
@@ -34,7 +36,7 @@ const Cart = ({ show, handleClose }) => {    // <<<<<< FIXED
   };
 
   return (
-    <Offcanvas show={show} onHide={handleClose} placement="end" backdrop>
+    <Offcanvas show={show} onHide={handleClose} placement="end" >
       <Offcanvas.Header closeButton>
         <Offcanvas.Title>Shopping Cart</Offcanvas.Title>
       </Offcanvas.Header>
@@ -44,10 +46,10 @@ const Cart = ({ show, handleClose }) => {    // <<<<<< FIXED
 
         {items.map(item => (
           <div key={item.id} className="d-flex align-items-center border-bottom pb-2 mb-2">
-            <Image src={item.image} alt={item.name} width="60" height="60" rounded />
+            <Image src={item.image} alt={item.title} width="60" height="60" rounded />
 
             <div className="ms-3 flex-grow-1">
-              <h6 className="m-0">{item.name}</h6>
+              <h6 className="m-0">{item.title}</h6>
               <small className="text-muted">₹{item.price}</small>
               <Form.Control
                 className="mt-1"
@@ -77,18 +79,52 @@ const Cart = ({ show, handleClose }) => {    // <<<<<< FIXED
         {items.length > 0 && (
           <>
             <h5 className="mt-3">Total: ₹{total}</h5>
-            <Button variant="danger" onClick={() => dispatch(clearCart())}>
-              Clear Cart
-            </Button>
-            <Button
-              className="ms-2"
-              variant="success"
-              disabled={!user || loading}
-              onClick={handleOrder}
-            >
-              {loading ? "Placing order..." : "Place Order"}
-            </Button>
-            {!user && <p className="mt-2 text-danger">Please login to place an order.</p>}
+
+            {!showPayment ? (
+              <>
+                <Button variant="danger" onClick={() => dispatch(clearCart())}>
+                  Clear Cart
+                </Button>
+
+                <Button
+                  className="ms-2"
+                  variant="success"
+                  disabled={!user}
+                  onClick={() => setShowPayment(true)}
+                >
+                  Proceed to Payment
+                </Button>
+
+                {!user && <p className="mt-2 text-danger">Please login to place an order.</p>}
+              </>
+            ) : (
+              <div className="mt-3 p-3 border rounded">
+                <h6>Payment Method</h6>
+                <Form.Check
+                  type="radio"
+                  label="Cash on Delivery"
+                  checked
+                  readOnly
+                />
+                <div className="d-flex gap-2 mt-3">
+                <Button
+                  variant="success"
+                  disabled={loading}
+                  onClick={handleOrder}
+                >
+                  {loading ? "Placing order..." : "Confirm Order (COD)"}
+                </Button>
+
+                <Button
+                  variant="secondary"
+                  onClick={() => setShowPayment(false)}
+                  disabled={loading}
+                >
+                  Cancel
+                </Button>
+                </div>
+              </div>
+            )}
           </>
         )}
       </Offcanvas.Body>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Card, Container, Form, Button } from "react-bootstrap";
-import { loginRequest } from "../api/authService";
+import { loginRequest } from "../Services/authService";
 import { useDispatch } from "react-redux";
 import { login as loginAction } from "../Store/authSlice";
 import { Link, useNavigate } from "react-router-dom";

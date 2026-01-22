@@ -1,0 +1,43 @@
+.app-footer {
+  background: linear-gradient(135deg, #0b0f19, #11162a);
+  padding: 18px 0;
+  color: #ffffff;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #ffffff;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.footer-brand-link:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.footer-brand {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.footer-copy {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.65);
+  text-align: center;
+}
+
+/* Mobile tweaks */
+@media (max-width: 768px) {
+  .app-footer {
+    text-align: center;
+  }
+
+  .footer-copy {
+    margin-top: 8px;
+  }
+}
